@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../components/gradient_text.dart';
 
@@ -10,16 +11,23 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 22),
-            _buildLogo(),
-            const SizedBox(height: 22),
-            _buildPoint(),
-            const SizedBox(height: 22),
-            _buildCardNews(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 22),
+              _buildLogo(),
+              const SizedBox(height: 22),
+              _buildPoint(),
+              const SizedBox(height: 22),
+              _buildCardNews(),
+              const SizedBox(height: 22),
+              _buildParentCallButton(),
+              const SizedBox(height: 22),
+              _buildWaterTimer(),
+              const SizedBox(height: 22),
+            ],
+          ),
         ),
       ),
     );
@@ -94,6 +102,93 @@ class HomeScreen extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(19),
         child: Image.asset('assets/images/card_news.png'),
+      ),
+    );
+  }
+
+  Widget _buildParentCallButton() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 27),
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: const Color(0xFFBAFFD3),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black, width: 1),
+      ),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            LucideIcons.phoneCall,
+            color: Colors.black,
+          ),
+          SizedBox(width: 10),
+          Text(
+            "부모님께 안부 전화 드리기",
+            style: TextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWaterTimer() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 27),
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: const Color(0xFFBAF9FF),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black, width: 1),
+      ),
+      child: Column(
+        children: [
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                LucideIcons.glassWater,
+                color: Colors.black,
+              ),
+              SizedBox(width: 10),
+              Text(
+                "물 먹기 타이머",
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            "00:59:58",
+            style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF387278),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(40),
+              border: Border.all(color: Colors.black, width: 2),
+            ),
+            child: const Text(
+              "물을 마셨어요!",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          const SizedBox(height: 19),
+          const Text(
+            "한 시간에 한 컵씩 물을 마시면\n더위를 이겨내는 데 도움이 돼요",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              height: 1.2,
+            ),
+          ),
+        ],
       ),
     );
   }
