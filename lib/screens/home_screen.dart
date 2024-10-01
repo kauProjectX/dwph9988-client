@@ -17,6 +17,8 @@ class HomeScreen extends StatelessWidget {
             _buildLogo(),
             const SizedBox(height: 22),
             _buildPoint(),
+            const SizedBox(height: 22),
+            _buildCardNews(),
           ],
         ),
       ),
@@ -77,6 +79,21 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCardNews() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 27),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black, width: 1),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(19),
+        child: Image.asset('assets/images/card_news.png'),
       ),
     );
   }
