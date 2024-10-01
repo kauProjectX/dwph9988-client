@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.6.6
   lucide_icons_flutter: ^1.2.0
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +62,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/
+    - assets/images/
 
   fonts:
     - family: Gmarket Sans
