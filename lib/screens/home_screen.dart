@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../components/gradient_text.dart';
+import 'point_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,7 +20,10 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 22),
               _buildLogo(),
               const SizedBox(height: 22),
-              _buildPoint(),
+              GestureDetector(
+                onTap: () => Get.to(() => const PointDetailScreen()),
+                child: _buildPoint(),
+              ),
               const SizedBox(height: 22),
               _buildCardNews(),
               const SizedBox(height: 22),
