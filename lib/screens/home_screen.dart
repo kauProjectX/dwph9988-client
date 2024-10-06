@@ -1,3 +1,4 @@
+import 'package:dwph9988/screens/card_news_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -25,7 +26,10 @@ class HomeScreen extends StatelessWidget {
                 child: _buildPoint(),
               ),
               const SizedBox(height: 22),
-              _buildCardNews(),
+              GestureDetector(
+                onTap: () => Get.to(() => const CardNewsScreen()),
+                child: _buildCardNews(),
+              ),
               const SizedBox(height: 22),
               _buildParentCallButton(),
               const SizedBox(height: 22),
