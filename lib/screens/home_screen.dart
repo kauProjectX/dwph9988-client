@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
               _buildLogo(),
               const SizedBox(height: 22),
               GestureDetector(
-                onTap: () => Get.to(() => const PointDetailScreen()),
+                onTap: () => Get.to(() => PointDetailScreen()),
                 child: _buildPoint(),
               ),
               const SizedBox(height: 22),
