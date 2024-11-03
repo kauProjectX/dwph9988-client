@@ -11,6 +11,7 @@ class EmergencyScreen extends StatelessWidget {
         title: const Text("긴급 서비스"),
         backgroundColor: const Color(0xFFFFE5E5),
         centerTitle: true,
+        leading: Container(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
