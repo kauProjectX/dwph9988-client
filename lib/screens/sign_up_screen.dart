@@ -27,15 +27,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 40),
-                  _buildLogo(),
+                  const SizedBox(height: 25),
                   const SizedBox(height: 40),
                   const Text(
                     '회원 가입',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.w500),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 50),
                   SizedBox(
                     width: 270,
                     height: 50,
@@ -79,7 +78,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       Row(
                         children: [
-                          const Text('보호자'),
+                          const Text(
+                            '보호자',
+                            style: TextStyle(fontSize: 20),
+                          ),
                           Radio<UserRole>(
                             value: UserRole.guardian,
                             groupValue: _selectedRole,
@@ -91,10 +93,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(width: 70),
+                      const SizedBox(width: 35),
                       Row(
                         children: [
-                          const Text('어르신'),
+                          const Text(
+                            '어르신',
+                            style: TextStyle(fontSize: 20),
+                          ),
                           Radio<UserRole>(
                             value: UserRole.senior,
                             groupValue: _selectedRole,
@@ -137,13 +142,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildLogo() {
-    return SvgPicture.asset(
-      'assets/images/logo.svg',
-      height: 50,
-    );
-  }
-
   Widget _buildTextField(String label,
       {bool obscureText = false,
       TextInputType keyboardType = TextInputType.text}) {
@@ -154,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         filled: true,
         fillColor: Colors.white,
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: Colors.grey, fontSize: 20),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: Colors.grey),
