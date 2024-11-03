@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'emergency_screen.dart';
-import 'heat_info_screen.dart';
+import 'guardian/heat_info_screen.dart';
 import 'home_screen.dart';
 import 'settings_screen.dart';
 
@@ -38,7 +38,7 @@ class _AppScreenState extends State<AppScreen> {
           onDestinationSelected: (value) {
             if (_screenList[value] is Container) {
               if (value == 1) {
-                _screenList[value] = const HeatInfoScreen();
+                _screenList[value] = const GuardianHeatInfoScreen();
               } else if (value == 2) {
                 _screenList[value] = const EmergencyScreen();
               } else if (value == 3) {
