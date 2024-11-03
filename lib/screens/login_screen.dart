@@ -8,42 +8,6 @@ import 'find_idpw_screen.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 150),
-                _buildLogo(),
-                const SizedBox(height: 10),
-                const Text(
-                  '고령자 온열 질환 예방 서비스',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 50),
-                _buildInputFields(),
-                const SizedBox(height: 50),
-                _buildLoginButton(context),
-                const SizedBox(height: 20),
-                _buildSignUpButton(),
-                const SizedBox(height: 0),
-                _buildFindCredentialsButton(),
-                const SizedBox(height: 10),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildLogo() {
     return SvgPicture.asset(
       'assets/images/logo.svg',
@@ -63,7 +27,10 @@ class LoginScreen extends StatelessWidget {
                 filled: true,
                 fillColor: Colors.white,
                 labelText: '아이디',
-                labelStyle: const TextStyle(color: Colors.grey),
+                labelStyle: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 20,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(color: Colors.grey),
@@ -85,7 +52,10 @@ class LoginScreen extends StatelessWidget {
                 filled: true,
                 fillColor: Colors.white,
                 labelText: '비밀번호',
-                labelStyle: const TextStyle(color: Colors.grey),
+                labelStyle: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 20,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(color: Colors.grey),
@@ -122,7 +92,8 @@ class LoginScreen extends StatelessWidget {
         ),
         child: const Text(
           '로그인',
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(
+              fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white),
         ),
       ),
     );
@@ -135,7 +106,7 @@ class LoginScreen extends StatelessWidget {
       },
       child: const Text(
         '회원가입',
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 18),
       ),
     );
   }
@@ -147,8 +118,52 @@ class LoginScreen extends StatelessWidget {
       },
       child: const Text(
         '아이디/비밀번호 찾기',
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 18),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 150),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      '고령자 온열 질환 예방 서비스',
+                      style: TextStyle(
+                        fontSize: 15.5,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFFFF7171),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 0),
+                _buildLogo(), // 로고를 텍스트 아래에 배치
+                const SizedBox(height: 50),
+                _buildInputFields(),
+                const SizedBox(height: 50),
+                _buildLoginButton(context),
+                const SizedBox(height: 20),
+                _buildSignUpButton(),
+                const SizedBox(height: 0),
+                _buildFindCredentialsButton(),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
+
+void main() => runApp(const MaterialApp(home: LoginScreen()));
