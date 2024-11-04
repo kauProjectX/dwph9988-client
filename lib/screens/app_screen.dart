@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../controllers/user_controller.dart';
+import 'elderly/heat_info_screen.dart';
 import 'emergency_screen.dart';
 import 'guardian/heat_info_screen.dart';
 import 'home_screen.dart';
@@ -24,6 +27,8 @@ class _AppScreenState extends State<AppScreen> {
     Container(),
   ];
 
+  final UserController userController = Get.find<UserController>();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -38,7 +43,11 @@ class _AppScreenState extends State<AppScreen> {
           onDestinationSelected: (value) {
             if (_screenList[value] is Container) {
               if (value == 1) {
-                _screenList[value] = const GuardianHeatInfoScreen();
+                if (Get.find<UserController>().isGuardian) {
+                  _screenList[value] = const GuardianHeatInfoScreen();
+                } else {
+                  _screenList[value] = const ElderlyHeatInfoScreen();
+                }
               } else if (value == 2) {
                 _screenList[value] = const EmergencyScreen();
               } else if (value == 3) {
