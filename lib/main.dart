@@ -2,9 +2,12 @@ import 'package:dwph9988/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:dwph9988/controllers/user_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  Get.put(UserController());
 
   await NaverMapSdk.instance.initialize(
     clientId: 'i5w3oko0wk',

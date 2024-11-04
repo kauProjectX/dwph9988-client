@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'sign_up_screen.dart';
 import 'app_screen.dart';
 import 'find_idpw_screen.dart';
+import '../controllers/user_controller.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -81,7 +82,32 @@ class LoginScreen extends StatelessWidget {
       width: 200,
       child: ElevatedButton(
         onPressed: () {
-          Get.to(() => const AppScreen());
+          Get.dialog(
+            AlertDialog(
+              title: const Text('모드 선택'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    title: const Text('보호자 모드'),
+                    onTap: () {
+                      Get.find<UserController>().setUserMode(UserMode.guardian);
+                      Get.back();
+                      Get.to(() => const AppScreen());
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('노약자 모드'),
+                    onTap: () {
+                      Get.find<UserController>().setUserMode(UserMode.senior);
+                      Get.back();
+                      Get.to(() => const AppScreen());
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFFF7171),
@@ -93,7 +119,10 @@ class LoginScreen extends StatelessWidget {
         child: const Text(
           '로그인',
           style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white),
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
       ),
     );
