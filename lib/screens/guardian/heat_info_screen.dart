@@ -193,7 +193,7 @@ class GuardianHeatInfoScreen extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      const Text(
                         '현위치 업데이트',
                         style: TextStyle(color: Colors.black),
                       ),

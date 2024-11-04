@@ -6,7 +6,7 @@ import 'login_screen.dart';
 enum UserRole { guardian, senior }
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  const SignUpScreen({super.key});
 
   @override
   _SignUpScreenState createState() => _SignUpScreenState();

@@ -6,7 +6,7 @@ import 'app_screen.dart';
 import 'find_idpw_screen.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   Widget _buildLogo() {
     return SvgPicture.asset(

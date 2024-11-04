@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CardNewsScreen extends StatelessWidget {
-  const CardNewsScreen({Key? key}) : super(key: key);
+  const CardNewsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

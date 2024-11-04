@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FindIDPWScreen extends StatelessWidget {
-  const FindIDPWScreen({Key? key}) : super(key: key);
+  const FindIDPWScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

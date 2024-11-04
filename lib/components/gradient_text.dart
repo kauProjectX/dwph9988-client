@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 // https://www.allaboutflutter.com/create-gradient-text-colour-in-flutter
 class GradientText extends StatelessWidget {
   const GradientText({
-    Key? key,
+    super.key,
     required this.text,
     this.style,
     required this.gradient,
-  }) : super(key: key);
+  });
   final String text;
   final TextStyle? style;
   final Gradient gradient;
