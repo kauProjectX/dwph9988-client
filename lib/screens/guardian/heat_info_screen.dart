@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 
 class GuardianHeatInfoScreen extends StatelessWidget {
   const GuardianHeatInfoScreen({super.key});
@@ -64,7 +65,7 @@ class GuardianHeatInfoScreen extends StatelessWidget {
                     Expanded(
                       child: _buildTemperatureCard(
                         '어머니 지역 날씨',
-                        '고양시 덕양구',
+                        '서울특별시 강남구',
                         '33°C',
                         '체감 온도 35°C',
                       ),
@@ -83,9 +84,19 @@ class GuardianHeatInfoScreen extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // Map Cards
-                _buildMapCard('어머니 근처 가까운 무더위 쉼터 찾기', context),
+                _buildMapCard(
+                  '어머니 근처 가까운 무더위 쉼터 찾기',
+                  context,
+                  lat: 37.5666805,
+                  lng: 126.9784147,
+                ),
                 const SizedBox(height: 16),
-                _buildMapCard('아버지 근처 가까운 무더위 쉼터 찾기', context),
+                _buildMapCard(
+                  '아버지 근처 가까운 무더위 쉼터 찾기',
+                  context,
+                  lat: 37.6037589,
+                  lng: 126.8666034,
+                ),
               ],
             ),
           ),
@@ -141,7 +152,12 @@ class GuardianHeatInfoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMapCard(String title, BuildContext context) {
+  Widget _buildMapCard(
+    String title,
+    BuildContext context, {
+    required double lat,
+    required double lng,
+  }) {
     final String message = title.contains('어머니')
         ? '어머니에게 앱을 켜 달라는 알림을 보냈습니다'
         : '아버지에게 앱을 켜 달라는 알림을 보냈습니다';
@@ -213,11 +229,31 @@ class GuardianHeatInfoScreen extends StatelessWidget {
           Container(
             height: 150,
             decoration: BoxDecoration(
-              color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(8),
             ),
-            // TODO: Implement actual map
-            child: const Center(child: Text('지도 영역')),
+            child: NaverMap(
+              options: NaverMapViewOptions(
+                initialCameraPosition: NCameraPosition(
+                  target: NLatLng(lat, lng),
+                  zoom: 15,
+                ),
+                mapType: NMapType.basic,
+                activeLayerGroups: [NLayerGroup.building, NLayerGroup.transit],
+                rotationGesturesEnable: false,
+                scrollGesturesEnable: true,
+                tiltGesturesEnable: false,
+                zoomGesturesEnable: true,
+                stopGesturesEnable: false,
+              ),
+              onMapReady: (controller) {
+                controller.addOverlay(
+                  NMarker(
+                    id: 'marker',
+                    position: NLatLng(lat, lng),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
