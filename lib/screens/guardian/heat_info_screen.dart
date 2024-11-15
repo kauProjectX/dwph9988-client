@@ -162,6 +162,15 @@ class GuardianHeatInfoScreen extends StatelessWidget {
         ? '어머니에게 앱을 켜 달라는 알림을 보냈습니다'
         : '아버지에게 앱을 켜 달라는 알림을 보냈습니다';
 
+    // 현재 시각에서 0~600초 사이의 랜덤값을 뺀 시각 계산
+    final now = DateTime.now();
+    final random = DateTime.now().subtract(
+      Duration(seconds: (DateTime.now().millisecondsSinceEpoch % 601)),
+    );
+    final formattedTime = "${random.hour.toString().padLeft(2, '0')}:"
+        "${random.minute.toString().padLeft(2, '0')}:"
+        "${random.second.toString().padLeft(2, '0')}";
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -183,6 +192,25 @@ class GuardianHeatInfoScreen extends StatelessWidget {
                 title,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SvgPicture.asset(
+                'assets/images/dashicons_update.svg',
+                width: 16,
+                height: 16,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                '마지막 업데이트 시각: $formattedTime',
+                style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 12,
                 ),
               ),
             ],
