@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CardNewsScreen extends StatelessWidget {
   const CardNewsScreen({super.key});
