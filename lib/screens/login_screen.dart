@@ -33,16 +33,57 @@ class LoginScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => KakaoLoginWebView(
-                    onLoginSuccess: (data) {
+                    onLoginSuccess: (data) async {
                       Get.log('Login success: $data');
                       var accessToken = data['result']['accessToken'];
-                      UserMode mode =
-                          data['result']['user']['userType'] == 'GUARDIAN'
-                              ? UserMode.guardian
-                              : UserMode.senior;
-                      userController.setAccessToken(accessToken);
-                      userController.setUserMode(mode);
-                      Get.to(() => const ElderEasyHomeScreen());
+
+                      // UserMode mode =
+                      //     data['result']['user']['userType'] == 'GUARDIAN'
+                      //         ? UserMode.guardian
+                      //         : UserMode.senior;
+                      // userController.setAccessToken(accessToken);
+                      // userController.setUserMode(mode);
+
+                      // if (mode == UserMode.guardian) {
+                      //   Get.to(() => const AppScreen());
+                      // } else {
+                      //   Get.to(() => const ElderEasyHomeScreen());
+                      // }
+
+                      // 사용자 유형 선택 다이얼로그 표시
+                      final UserMode? selectedMode = await showDialog<UserMode>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('사용자 유형 선택'),
+                            content: const Text('어떤 유형의 사용자이신가요?'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('보호자'),
+                                onPressed: () =>
+                                    Navigator.pop(context, UserMode.guardian),
+                              ),
+                              TextButton(
+                                child: const Text('노약자'),
+                                onPressed: () =>
+                                    Navigator.pop(context, UserMode.senior),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      if (selectedMode != null) {
+                        userController.setAccessToken(accessToken);
+                        userController.setUserMode(selectedMode);
+
+                        if (selectedMode == UserMode.guardian) {
+                          Get.to(() => const AppScreen());
+                        } else {
+                          Get.to(() => const ElderEasyHomeScreen());
+                        }
+                      }
                     },
                   ),
                 ),
