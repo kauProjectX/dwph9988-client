@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../controllers/user_controller.dart';
 import 'elderly/heat_info_screen.dart';
 import 'emergency_screen.dart';
+import 'fall_detection_screen.dart';
 import 'guardian/heat_info_screen.dart';
 import 'home_screen.dart';
 import 'settings_screen.dart';
@@ -51,7 +52,7 @@ class _AppScreenState extends State<AppScreen> {
               } else if (value == 2) {
                 _screenList[value] = const EmergencyScreen();
               } else if (value == 3) {
-                _screenList[value] = const SettingsScreen();
+                _screenList[value] = const FallDetectionScreen();
               }
             }
 
