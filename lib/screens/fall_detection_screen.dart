@@ -66,8 +66,8 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
             (timer) async {
               remainingSeconds--;
 
-              // 5초 미만일 때 사이렌 재생 시작
-              if (remainingSeconds < 5 && !isPlaying) {
+              // 5초 이하일 때 사이렌 재생 시작
+              if (remainingSeconds <= 5 && !isPlaying) {
                 isPlaying = true;
                 await _player.setReleaseMode(ReleaseMode.loop); // 반복 재생 설정
                 await _player.play(AssetSource('sfx/siren.wav'));
