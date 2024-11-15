@@ -3,12 +3,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'dart:async';
 
 import '../components/gradient_text.dart';
 import 'point_detail_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Timer? _timer;
+  int _remainingSeconds = 0;
+  bool _isRunning = false;
+
+  void _toggleTimer() {
+    _timer?.cancel();
+    setState(() {
+      _remainingSeconds = 3600;
+      if (!_isRunning) {
+        _startTimer();
+      }
+      _isRunning = !_isRunning;
+    });
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_remainingSeconds > 0) {
+          _remainingSeconds--;
+        } else {
+          _remainingSeconds = 3600;
+        }
+      });
+    });
+  }
+
+  String _formatTime() {
+    int hours = _remainingSeconds ~/ 3600;
+    int minutes = (_remainingSeconds % 3600) ~/ 60;
+    int seconds = _remainingSeconds % 60;
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,25 +207,28 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          const Text(
-            "00:59:58",
-            style: TextStyle(
+          Text(
+            _formatTime(),
+            style: const TextStyle(
               fontSize: 50,
               fontWeight: FontWeight.bold,
               color: Color(0xFF387278),
             ),
           ),
           const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(40),
-              border: Border.all(color: Colors.black, width: 2),
-            ),
-            child: const Text(
-              "물을 마셨어요!",
-              style: TextStyle(fontSize: 20),
+          GestureDetector(
+            onTap: _toggleTimer,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(40),
+                border: Border.all(color: Colors.black, width: 2),
+              ),
+              child: const Text(
+                "물을 마셨어요!",
+                style: TextStyle(fontSize: 20),
+              ),
             ),
           ),
           const SizedBox(height: 19),

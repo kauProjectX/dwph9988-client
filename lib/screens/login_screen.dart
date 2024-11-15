@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dwph9988/screens/app_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -41,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                               : UserMode.senior;
                       userController.setAccessToken(accessToken);
                       userController.setUserMode(mode);
-                      Get.to(() => const HomeScreen());
+                      Get.to(() => const AppScreen());
                     },
                   ),
                 ),
