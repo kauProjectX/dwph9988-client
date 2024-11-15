@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../controllers/user_controller.dart';
 import 'app_screen.dart';
+import '../screens/elderly/easy_home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -39,7 +40,7 @@ class LoginScreen extends StatelessWidget {
                     onTap: () {
                       Get.find<UserController>().setUserMode(UserMode.senior);
                       Get.back();
-                      Get.to(() => const AppScreen());
+                      Get.to(() => const ElderEasyHomeScreen());
                     },
                   ),
                 ],
