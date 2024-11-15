@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../controllers/user_controller.dart';
-import 'app_screen.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -16,52 +20,60 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _buildLoginButton(BuildContext context) {
+    final userController = Get.put(UserController());
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: ElevatedButton(
-        onPressed: () {
-          Get.dialog(
-            AlertDialog(
-              title: const Text('모드 선택'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    title: const Text('보호자 모드'),
-                    onTap: () {
-                      Get.find<UserController>().setUserMode(UserMode.guardian);
-                      Get.back();
-                      Get.to(() => const AppScreen());
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => KakaoLoginWebView(
+                    onLoginSuccess: (data) {
+                      Get.log('Login success: $data');
+                      var accessToken = data['result']['accessToken'];
+                      UserMode mode =
+                          data['result']['user']['userType'] == 'GUARDIAN'
+                              ? UserMode.guardian
+                              : UserMode.senior;
+                      userController.setAccessToken(accessToken);
+                      userController.setUserMode(mode);
+                      Get.to(() => const HomeScreen());
                     },
                   ),
-                  ListTile(
-                    title: const Text('노약자 모드'),
-                    onTap: () {
-                      Get.find<UserController>().setUserMode(UserMode.senior);
-                      Get.back();
-                      Get.to(() => const AppScreen());
-                    },
-                  ),
-                ],
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF7171),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFFF7171),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/mingcute_kakao-talk-fill.svg',
+                  height: 30,
+                ),
+                const SizedBox(width: 10),
+                const Text(
+                  '카카오 로그인',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        child: const Text(
-          '카카오 로그인',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
+        ],
       ),
     );
   }
@@ -96,6 +108,64 @@ class LoginScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class KakaoLoginWebView extends StatefulWidget {
+  final void Function(Map<String, dynamic>) onLoginSuccess;
+
+  const KakaoLoginWebView({Key? key, required this.onLoginSuccess})
+      : super(key: key);
+
+  @override
+  State<KakaoLoginWebView> createState() => _KakaoLoginWebViewState();
+}
+
+class _KakaoLoginWebViewState extends State<KakaoLoginWebView> {
+  late final WebViewController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: (request) {
+            if (request.url.contains('/api/members/social/kakao/callback')) {
+              _handleCallback(request.url);
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(
+          Uri.parse('https://dwph9988.shop/api/members/social/kakao'));
+  }
+
+  Future<void> _handleCallback(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        widget.onLoginSuccess(data);
+      }
+    } catch (e) {
+      print('Error during callback: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('카카오 로그인'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: WebViewWidget(controller: controller),
     );
   }
 }
