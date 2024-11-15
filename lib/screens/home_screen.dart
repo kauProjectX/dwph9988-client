@@ -34,6 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        _timer?.cancel();
+        return;
+      }
+
       setState(() {
         if (_remainingSeconds > 0) {
           _remainingSeconds--;
