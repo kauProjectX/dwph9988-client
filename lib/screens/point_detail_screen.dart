@@ -153,7 +153,7 @@ class PointDetailScreen extends StatelessWidget {
               Icon(LucideIcons.piggyBank),
               SizedBox(width: 10),
               Text(
-                "인출하기",
+                "지역 화폐로 변환하기",
                 style: TextStyle(fontSize: 23),
               ),
             ],
