@@ -43,6 +43,7 @@ dependencies:
   http: ^1.2.2
   url_launcher: ^6.3.1
   sensors_plus: ^6.1.0
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +68,7 @@ flutter:
 
   assets:
     - assets/images/
-
+    - assets/sfx/
   fonts:
     - family: Gmarket Sans
       fonts:

@@ -4,6 +4,7 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class FallDetectionScreen extends StatefulWidget {
   const FallDetectionScreen({super.key});
@@ -18,6 +19,7 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
   StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
   bool _isFallDetected = false;
   List<double> _currentAcceleration = [0, 0, 0];
+  final AudioPlayer _player = AudioPlayer();
 
   @override
   void initState() {
@@ -51,6 +53,7 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
   void _showFallAlert() {
     int remainingSeconds = 10;
     Timer? countdownTimer;
+    bool isPlaying = false;
 
     showDialog(
       context: context,
@@ -62,8 +65,17 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
             const Duration(seconds: 1),
             (timer) async {
               remainingSeconds--;
+
+              // 5초 미만일 때 사이렌 재생 시작
+              if (remainingSeconds < 5 && !isPlaying) {
+                isPlaying = true;
+                await _player.setReleaseMode(ReleaseMode.loop); // 반복 재생 설정
+                await _player.play(AssetSource('sfx/siren.wav'));
+              }
+
               if (remainingSeconds <= 0) {
                 timer.cancel();
+                _player.stop(); // 사이렌 중지
                 Navigator.of(context).pop();
 
                 final Uri phoneUri = Uri(scheme: 'tel', path: '010-1234-1234');
@@ -80,11 +92,13 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
 
           return AlertDialog(
             title: const Text('낙상이 감지되었습니다!'),
-            content: const Text('괜찮으신가요?\n10초 이내에 응답이 없으면 보호자에게 자동으로 연락됩니다.'),
+            content:
+                const Text('괜찮으신가요?\n10초 이내에 응답이 없으면 119와 보호자에게 자동으로 연락됩니다.'),
             actions: [
               TextButton(
                 onPressed: () {
                   countdownTimer?.cancel();
+                  _player.stop(); // 사이렌 중지
                   this.setState(() => _isFallDetected = false);
                   Navigator.of(context).pop();
                 },
@@ -93,13 +107,13 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
               TextButton(
                 onPressed: () async {
                   countdownTimer?.cancel();
+                  _player.stop(); // 사이렌 중지
                   this.setState(() => _isFallDetected = false);
                   final Uri phoneUri =
                       Uri(scheme: 'tel', path: '010-1234-1234');
                   if (await canLaunchUrl(phoneUri)) {
                     await launchUrl(phoneUri);
                   }
-
                   Navigator.of(context).pop();
                 },
                 style: TextButton.styleFrom(
@@ -113,12 +127,14 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
       ),
     ).then((_) {
       countdownTimer?.cancel();
+      _player.stop(); // 사이렌 중지
       setState(() => _isFallDetected = false);
     });
   }
 
   @override
   void dispose() {
+    _player.dispose();
     _accelerometerSubscription?.cancel();
     super.dispose();
   }
