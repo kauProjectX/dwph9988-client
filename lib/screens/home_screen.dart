@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../components/gradient_text.dart';
 import 'point_detail_screen.dart';
@@ -156,27 +157,35 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildParentCallButton() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 27),
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: const Color(0xFFBAFFD3),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.black, width: 1),
-      ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            LucideIcons.phoneCall,
-            color: Colors.black,
-          ),
-          SizedBox(width: 10),
-          Text(
-            "부모님께 안부 전화 드리기",
-            style: TextStyle(fontSize: 20),
-          ),
-        ],
+    return GestureDetector(
+      onTap: () async {
+        final Uri phoneUri = Uri(scheme: 'tel', path: '010-1234-1234');
+        if (await canLaunchUrl(phoneUri)) {
+          await launchUrl(phoneUri);
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 27),
+        padding: const EdgeInsets.all(22),
+        decoration: BoxDecoration(
+          color: const Color(0xFFBAFFD3),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.black, width: 1),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              LucideIcons.phoneCall,
+              color: Colors.black,
+            ),
+            SizedBox(width: 10),
+            Text(
+              "부모님께 안부 전화 드리기",
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
       ),
     );
   }
