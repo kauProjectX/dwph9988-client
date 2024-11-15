@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../controllers/user_controller.dart';
 import 'elderly/heat_info_screen.dart';
 import 'emergency_screen.dart';
+import 'fall_detection_screen.dart';
 import 'guardian/heat_info_screen.dart';
 import 'home_screen.dart';
 import 'settings_screen.dart';
@@ -49,7 +50,7 @@ class _AppScreenState extends State<AppScreen> {
                   _screenList[value] = const ElderlyHeatInfoScreen();
                 }
               } else if (value == 2) {
-                _screenList[value] = const EmergencyScreen();
+                _screenList[value] = const FallDetectionScreen();
               } else if (value == 3) {
                 _screenList[value] = const SettingsScreen();
               }
@@ -68,8 +69,8 @@ class _AppScreenState extends State<AppScreen> {
               label: '폭염 정보',
             ),
             NavigationDestination(
-              icon: Icon(LucideIcons.ambulance),
-              label: '긴급 서비스',
+              icon: Icon(LucideIcons.triangleAlert),
+              label: '낙상 감지',
             ),
             NavigationDestination(
               icon: Icon(LucideIcons.settings),
