@@ -5,6 +5,7 @@ import '../point_detail_screen.dart';
 import '../home_screen.dart';
 import '../elderly/heat_info_screen.dart';
 import '../settings_screen.dart';
+import '../fall_detection_screen.dart';
 
 class ElderEasyHomeScreen extends StatelessWidget {
   const ElderEasyHomeScreen({super.key});
@@ -151,9 +152,11 @@ class ElderEasyHomeScreen extends StatelessWidget {
             '낙상 감지',
             'elder_fall.svg',
             isHighlighted: true,
-            onTap: () {
-              // 추후 페이지 연결 예정
-            },
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const FallDetectionScreen()),
+            ),
           ),
           _buildMenuItem(
             '설정',
