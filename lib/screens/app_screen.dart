@@ -70,7 +70,7 @@ class _AppScreenState extends State<AppScreen> {
             ),
             NavigationDestination(
               icon: Icon(LucideIcons.triangleAlert),
-              label: '낙상 감지',
+              label: '위험 감지',
             ),
             NavigationDestination(
               icon: Icon(LucideIcons.settings),

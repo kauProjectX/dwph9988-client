@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:geolocator/geolocator.dart';
 
 class FallDetectionScreen extends StatefulWidget {
   const FallDetectionScreen({super.key});
@@ -20,11 +21,125 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
   bool _isFallDetected = false;
   List<double> _currentAcceleration = [0, 0, 0];
   final AudioPlayer _player = AudioPlayer();
+  StreamSubscription<Position>? _positionSubscription;
+  Position? _referencePosition; // 기준점
+  Position? _lastPosition; // 마지막 위치
+  DateTime? _stationaryStartTime;
+
+  // 상수
+  static const double _movementThreshold = 10.0; // meters
+  static const int _stationaryThresholdMinutes = 10;
+
+  // 상태
+  bool _isInitializing = true;
 
   @override
   void initState() {
     super.initState();
     _startListening();
+    _startLocationTracking();
+  }
+
+  Future<void> _startLocationTracking() async {
+    final permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      await Geolocator.requestPermission();
+    }
+
+    _positionSubscription =
+        Geolocator.getPositionStream().listen(_handleGpsSignal);
+  }
+
+  void _handleGpsSignal(Position position) {
+    setState(() {
+      _lastPosition = position;
+
+      if (_isInitializing) {
+        _isInitializing = false;
+        _referencePosition = position;
+        _stationaryStartTime = DateTime.now();
+        return;
+      }
+
+      // 기준점과의 거리 체크
+      final distance = Geolocator.distanceBetween(
+        _referencePosition!.latitude,
+        _referencePosition!.longitude,
+        position.latitude,
+        position.longitude,
+      );
+
+      if (distance >= _movementThreshold) {
+        // 10m 이상 이동: 새로운 기준점 설정
+        _referencePosition = position;
+        _stationaryStartTime = DateTime.now();
+      } else if (_stationaryStartTime != null) {
+        // 정지 시간 체크
+        final stationaryDuration =
+            DateTime.now().difference(_stationaryStartTime!);
+        if (stationaryDuration.inMinutes >= _stationaryThresholdMinutes) {
+          _showHeatAlert();
+          _referencePosition = position;
+          _stationaryStartTime = DateTime.now();
+        }
+      }
+    });
+  }
+
+  String _getMovementStatus() {
+    if (_isInitializing ||
+        _lastPosition == null ||
+        _referencePosition == null) {
+      return '-';
+    }
+
+    final distance = Geolocator.distanceBetween(
+      _referencePosition!.latitude,
+      _referencePosition!.longitude,
+      _lastPosition!.latitude,
+      _lastPosition!.longitude,
+    );
+
+    return _stationaryStartTime != null
+        ? '${distance.toStringAsFixed(1)}m (${_formatDuration(DateTime.now().difference(_stationaryStartTime!))} 전)'
+        : '${distance.toStringAsFixed(1)}m (이동 중)';
+  }
+
+  void _showHeatAlert() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('장시간 야외 활동 감지'),
+        content: const Text('현재 폭염 주의보가 발령된 상태입니다.\n괜찮으신가요?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('괜찮습니다'),
+          ),
+          TextButton(
+            onPressed: () => _showShelterGuide(),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.red,
+            ),
+            child: const Text('무더위 쉼터 안내'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showShelterGuide() {
+    // TODO: 무더위 쉼터 화면으로 이동 예정
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('가까운 무더위 쉼터 화면으로 이동할 예정입니다.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+    Navigator.pop(context); // 기존 알림창 닫기
   }
 
   void _startListening() {
@@ -132,10 +247,17 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
     });
   }
 
+  String _formatDuration(Duration duration) {
+    final minutes = duration.inMinutes;
+    final seconds = duration.inSeconds % 60;
+    return '$minutes분 $seconds초';
+  }
+
   @override
   void dispose() {
     _player.dispose();
     _accelerometerSubscription?.cancel();
+    _positionSubscription?.cancel();
     super.dispose();
   }
 
@@ -143,7 +265,7 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('낙상 감지'),
+        title: const Text('위험 감지'),
       ),
       body: Center(
         child: Column(
@@ -160,7 +282,7 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              _isFallDetected ? '낙상이 감지되었습니다!' : '낙상 감지 중...',
+              _isFallDetected ? '낙상이 감지되었습니다!' : '위험 감지 중...',
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -185,6 +307,33 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
                       'X: ${_currentAcceleration[0].toStringAsFixed(2)}\n'
                       'Y: ${_currentAcceleration[1].toStringAsFixed(2)}\n'
                       'Z: ${_currentAcceleration[2].toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'monospace',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Card(
+              margin: const EdgeInsets.all(16),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    const Text(
+                      '현재 GPS 위치 값',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      '현재 위치: ${_lastPosition?.latitude.toStringAsFixed(6) ?? 'N/A'}, '
+                      '${_lastPosition?.longitude.toStringAsFixed(6) ?? 'N/A'}\n'
+                      '이동 거리: ${_getMovementStatus()}',
                       style: const TextStyle(
                         fontSize: 16,
                         fontFamily: 'monospace',

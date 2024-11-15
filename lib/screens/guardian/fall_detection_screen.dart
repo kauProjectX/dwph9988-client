@@ -62,7 +62,7 @@ class _GuardianFallDetectionScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('낙상 감지'),
+        title: const Text('위험 감지'),
       ),
       body: Center(
         child: Column(
