@@ -187,47 +187,9 @@ class GuardianHeatInfoScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 4.0),
-                child: TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(message),
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        margin: const EdgeInsets.all(16),
-                      ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        '현위치 업데이트',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      const SizedBox(width: 4),
-                      SvgPicture.asset(
-                        'assets/images/dashicons_update.svg',
-                        width: 24,
-                        height: 24,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           Container(
-            height: 150,
+            height: 500,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -239,11 +201,6 @@ class GuardianHeatInfoScreen extends StatelessWidget {
                 ),
                 mapType: NMapType.basic,
                 activeLayerGroups: [NLayerGroup.building, NLayerGroup.transit],
-                rotationGesturesEnable: false,
-                scrollGesturesEnable: true,
-                tiltGesturesEnable: false,
-                zoomGesturesEnable: true,
-                stopGesturesEnable: false,
               ),
               onMapReady: (controller) {
                 controller.addOverlay(
