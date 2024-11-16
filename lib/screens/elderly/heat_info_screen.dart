@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:openapi/openapi.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ElderlyHeatInfoScreen extends StatefulWidget {
   const ElderlyHeatInfoScreen({super.key});
@@ -117,6 +118,55 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
       );
       _updateMarkers();
     }
+  }
+
+  Widget _buildShelterNavigationButton(Shelter shelter) {
+    return ElevatedButton(
+      onPressed: () async {
+        final Uri mapUri = Uri.parse(
+          'nmap://route/walk?dlat=${shelter.latitude}&dlng=${shelter.longitude}'
+          '&dname=${Uri.encodeComponent(shelter.name!)}'
+          '&appname=kr.youngminz.dwph9988',
+        );
+
+        try {
+          if (await canLaunchUrl(mapUri)) {
+            await launchUrl(mapUri);
+          } else {
+            // 네이버 지도 앱이 없을 경우 alert
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('네이버 지도 앱이 없습니다'),
+              ),
+            );
+          }
+        } catch (e) {
+          debugPrint('지도 앱 실행 실패: $e');
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFFFFE5E5),
+        side: const BorderSide(
+          color: Color(0xFFFF7171),
+          width: 1,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 4,
+        ),
+      ),
+      child: const Text(
+        '안내하기',
+        style: TextStyle(
+          fontSize: 22,
+          color: Color(0xFFFF7171),
+        ),
+      ),
+    );
   }
 
   @override
@@ -423,34 +473,7 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
                                         ),
                                       ),
                                       const SizedBox(width: 8),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          // 안내 로직 구현
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFFFFE5E5),
-                                          side: const BorderSide(
-                                            color: Color(0xFFFF7171),
-                                            width: 1,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 12,
-                                            vertical: 4,
-                                          ),
-                                        ),
-                                        child: const Text(
-                                          '안내하기',
-                                          style: TextStyle(
-                                            fontSize: 22,
-                                            color: Color(0xFFFF7171),
-                                          ),
-                                        ),
-                                      ),
+                                      _buildShelterNavigationButton(shelter),
                                     ],
                                   ),
                                 )
