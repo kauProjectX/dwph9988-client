@@ -47,7 +47,7 @@ class SettingsScreen extends StatelessWidget {
                           ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFDDE8FF),
+                              backgroundColor: const Color(0xFFFFE5E5),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 side: const BorderSide(
@@ -104,7 +104,7 @@ class SettingsScreen extends StatelessWidget {
                           ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFDDE8FF),
+                              backgroundColor: const Color(0xFFFFE5E5),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 side: const BorderSide(
@@ -132,7 +132,7 @@ class SettingsScreen extends StatelessWidget {
                           ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFDDE8FF),
+                              backgroundColor: const Color(0xFFFFE5E5),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 side: const BorderSide(
@@ -203,7 +203,7 @@ class SettingsScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF629CFF),
+                    backgroundColor: const Color(0xFFFF7171),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                       side: const BorderSide(color: Colors.black, width: 0.7),
