@@ -39,6 +39,11 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
   void initStateAsync() async {
     final SheltersApi api = Openapi().getSheltersApi();
 
+    final permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      await Geolocator.requestPermission();
+    }
+
     // 현재 위치 가져오기
     final position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,

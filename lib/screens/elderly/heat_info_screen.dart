@@ -27,6 +27,11 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
   }
 
   Future<void> _initializeData() async {
+    final permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      await Geolocator.requestPermission();
+    }
+
     final position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
@@ -101,6 +106,11 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
   }
 
   void _updateCurrentLocation() async {
+    final permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      await Geolocator.requestPermission();
+    }
+
     final position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
