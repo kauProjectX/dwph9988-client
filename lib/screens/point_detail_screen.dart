@@ -20,72 +20,49 @@ class PointDetailScreen extends StatelessWidget {
   PointDetailScreen({super.key});
 
   final formatter = NumberFormat.decimalPatternDigits(locale: 'en_us');
+
   final List<PointHistory> _pointHistories = [
     PointHistory(
-      date: "09.27",
-      description: "부모님에게 안부 전화",
-      point: 500,
-      balance: 450000,
+      date: "07.25",
+      description: "부모님께 안부 전화",
+      point: 100,
+      balance: 28300,
     ),
     PointHistory(
-      date: "09.27",
-      description: "인출",
-      point: -1500,
-      balance: 450000,
+      date: "07.24",
+      description: "카드 뉴스 퀴즈",
+      point: 50,
+      balance: 28250,
     ),
     PointHistory(
-      date: "09.27",
-      description: "카드 뉴스 공유",
-      point: 500,
-      balance: 450000,
+      date: "07.24",
+      description: "부모님께 안부 전화",
+      point: 100,
+      balance: 28150,
     ),
     PointHistory(
-      date: "09.27",
-      description: "부모님에게 안부 전화",
-      point: 500,
-      balance: 450000,
+      date: "07.23",
+      description: "무더위 쉼터 방문하기",
+      point: 200,
+      balance: 27950,
     ),
     PointHistory(
-      date: "09.27",
-      description: "부모님에게 안부 전화",
-      point: 500,
-      balance: 450000,
+      date: "07.22",
+      description: "부모님께 안부 전화",
+      point: 100,
+      balance: 27850,
     ),
     PointHistory(
-      date: "09.27",
-      description: "부모님에게 안부 전화",
-      point: 500,
-      balance: 450000,
+      date: "07.21",
+      description: "무더위 쉼터 방문하기",
+      point: 200,
+      balance: 27650,
     ),
     PointHistory(
-      date: "09.27",
-      description: "부모님에게 안부 전화",
-      point: 500,
-      balance: 450000,
-    ),
-    PointHistory(
-      date: "09.27",
-      description: "부모님에게 안부 전화",
-      point: 500,
-      balance: 450000,
-    ),
-    PointHistory(
-      date: "09.27",
-      description: "부모님에게 안부 전화",
-      point: 500,
-      balance: 450000,
-    ),
-    PointHistory(
-      date: "09.27",
-      description: "부모님에게 안부 전화",
-      point: 500,
-      balance: 450000,
-    ),
-    PointHistory(
-      date: "09.27",
-      description: "부모님에게 안부 전화",
-      point: 500,
-      balance: 450000,
+      date: "07.20",
+      description: "카드 뉴스 퀴즈",
+      point: 50,
+      balance: 27600,
     ),
   ];
 
@@ -122,7 +99,7 @@ class PointDetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "450,000 ",
+              "28,300 ",
               style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,

@@ -65,9 +65,9 @@ class GuardianHeatInfoScreen extends StatelessWidget {
                     Expanded(
                       child: _buildTemperatureCard(
                         '어머니 지역 날씨',
-                        '서울특별시 강남구',
-                        '33°C',
-                        '체감 온도 35°C',
+                        '경상북도 영주시',
+                        '35°C',
+                        '체감 온도 37.5°C',
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -75,8 +75,8 @@ class GuardianHeatInfoScreen extends StatelessWidget {
                       child: _buildTemperatureCard(
                         '아버지 지역 날씨',
                         '고양시 덕양구',
-                        '33°C',
-                        '체감 온도 35°C',
+                        '30°C',
+                        '체감 온도 33°C',
                       ),
                     ),
                   ],
@@ -87,8 +87,8 @@ class GuardianHeatInfoScreen extends StatelessWidget {
                 _buildMapCard(
                   '어머니 근처 가까운 무더위 쉼터 찾기',
                   context,
-                  lat: 37.5666805,
-                  lng: 126.9784147,
+                  lat: 36.870592,
+                  lng: 128.531593,
                 ),
                 const SizedBox(height: 16),
                 _buildMapCard(

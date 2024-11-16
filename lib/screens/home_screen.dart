@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "450,000",
+                "28,300",
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
