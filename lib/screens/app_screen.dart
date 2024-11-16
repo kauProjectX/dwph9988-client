@@ -23,7 +23,7 @@ class _AppScreenState extends State<AppScreen> {
   int _screenIndex = 0;
 
   final List<Widget> _screenList = [
-    const HomeScreen(),
+    const GuardianHomeScreen(),
     Container(),
     Container(),
     Container(),
