@@ -451,6 +451,73 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 16),
+                // Reward Button
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    border:
+                        Border.all(color: const Color(0xFFFF7171), width: 1.5),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/icon_pig.svg',
+                        height: 30,
+                        colorFilter: const ColorFilter.mode(
+                          Color(0xFFFF7171),
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const Text(
+                        '리워드 받기',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Color(0xFFFF7171),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Call Button
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    border:
+                        Border.all(color: const Color(0xFFFF7171), width: 1.5),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/icon_call.svg',
+                        height: 30,
+                        colorFilter: const ColorFilter.mode(
+                          Color(0xFFFF7171),
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const Text(
+                        '보호자에게 전화 걸기',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Color(0xFFFF7171),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
