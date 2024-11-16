@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CardNewsScreenOne extends StatelessWidget {
   const CardNewsScreenOne({super.key});
@@ -20,7 +20,6 @@ class CardNewsScreenOne extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.black, width: 1),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(19),
@@ -29,7 +28,12 @@ class CardNewsScreenOne extends StatelessWidget {
                   child: PageView.builder(
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      return Image.asset('assets/images/card_news_1.png');
+                      return Image.asset(
+                        'assets/images/card_news_1.png',
+                        fit: BoxFit.cover, // 이미지 크기를 컨테이너에 맞춤
+                        width: MediaQuery.of(context).size.width - 30,
+                        height: MediaQuery.of(context).size.width - 30,
+                      );
                     },
                   ),
                 ),
@@ -48,7 +52,10 @@ class CardNewsScreenOne extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SvgPicture.asset('assets/images/material-symbols_quiz.svg'),
+                  SvgPicture.asset(
+                    'assets/images/material-symbols_quiz.svg',
+                    height: 30,
+                  ),
                   const SizedBox(width: 20),
                   const Text(
                     "퀴즈 풀고 포인트 받기",
@@ -70,7 +77,10 @@ class CardNewsScreenOne extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SvgPicture.asset('assets/images/share-2.svg'),
+                  SvgPicture.asset(
+                    'assets/images/share-2.svg',
+                    height: 30,
+                  ),
                   const SizedBox(width: 20),
                   const Text(
                     "공유하고 포인트 받기",
