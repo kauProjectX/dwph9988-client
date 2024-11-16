@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CardNewsScreen extends StatelessWidget {
-  const CardNewsScreen({super.key});
+class CardNewsScreenOne extends StatelessWidget {
+  const CardNewsScreenOne({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("카드 뉴스"),
-        backgroundColor: const Color(0xFFE5F0FF),
+        backgroundColor: const Color(0xFFFFE5E5),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -29,7 +29,7 @@ class CardNewsScreen extends StatelessWidget {
                   child: PageView.builder(
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      return Image.asset('assets/images/card_news.png');
+                      return Image.asset('assets/images/card_news_1.png');
                     },
                   ),
                 ),
@@ -40,7 +40,7 @@ class CardNewsScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 15),
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
-                color: Color(0xFFE5F0FF),
+                color: Color(0xFFFFE5E5),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Colors.black, width: 1),
               ),
@@ -62,7 +62,7 @@ class CardNewsScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 15),
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
-                color: Color(0xFFE5F0FF),
+                color: Color(0xFFFFE5E5),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Colors.black, width: 1),
               ),

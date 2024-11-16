@@ -8,7 +8,8 @@ import 'elderly/heat_info_screen.dart';
 import 'fall_detection_screen.dart';
 import 'guardian/heat_info_screen.dart';
 import 'guardian/fall_detection_screen.dart';
-import 'home_screen.dart';
+import '../screens/elderly/home_screen.dart';
+import '../screens/guardian/home_screen.dart';
 import 'settings_screen.dart';
 
 class AppScreen extends StatefulWidget {
