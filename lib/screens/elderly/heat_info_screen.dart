@@ -133,10 +133,11 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Heat Alert Settings
+                // Heat Alert Settings (폭염 알림 설정)
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
+                    color: Colors.white, // 배경색 추가
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.black),
                   ),
@@ -148,83 +149,32 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
                           SvgPicture.asset(
                             'assets/images/ph_bell-fill.svg',
                             width: 48,
-                            height: 48,
                           ),
                           const SizedBox(width: 12),
                           const Text(
-                            '폭염 알림 설정',
+                            '재난 알림 - 폭염',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 25,
                             ),
                           ),
-                          const Spacer(),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFFF7171),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/images/pencil.svg',
-                                  width: 24,
-                                  height: 24,
-                                ),
-                                const SizedBox(width: 8),
-                                const Text(
-                                  '수정',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                         ],
                       ),
                       const SizedBox(height: 8),
-                      RichText(
-                        text: TextSpan(
-                          text: '일 최고 기온 ',
-                          style: DefaultTextStyle.of(context)
-                              .style
-                              .copyWith(fontSize: 23),
-                          children: [
-                            TextSpan(
-                              text: '30°C',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFFF7171),
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' 이상',
-                              style: DefaultTextStyle.of(context)
-                                  .style
-                                  .copyWith(fontSize: 23),
-                            ),
-                          ],
-                        ),
+                      const Text(
+                        '2024-08-16  11:49:30 AM\n\n오늘(11일) 11:00부로 폭염경보가 발효되었습니다. 가급적 야외활동을 자제하여 주시고 충분한 수분을 섭취바랍니다.\n\n울산광역시 (연락처:052-229-405)',
+                        style: TextStyle(fontSize: 20),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 16),
 
-                // Current Weather
+                // Current Weather (현재 지역 날씨)
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
+                    color: Colors.white, // 배경색 추가
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.black),
                   ),
@@ -285,10 +235,11 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // Nearby Shelter Search
+                // Nearby Shelter Search (가까운 무더위 쉼터 찾기)
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
+                    color: Colors.white, // 배경색 추가
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.black),
                   ),
@@ -318,6 +269,7 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
                           Container(
                             height: 400,
                             decoration: BoxDecoration(
+                              color: Colors.white, // 배경색 추가
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: _currentLocation == null

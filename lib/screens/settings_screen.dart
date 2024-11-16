@@ -11,7 +11,7 @@ class SettingsScreen extends StatelessWidget {
           "환경 설정",
           style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: const Color(0xFFE1EBFF),
+        backgroundColor: const Color(0xFFFFE5E5),
         elevation: 0,
         centerTitle: true,
         leading: Container(),

@@ -6,8 +6,8 @@ import '../elderly/home_screen.dart';
 import '../elderly/heat_info_screen.dart';
 import '../settings_screen.dart';
 
-class ElderEasyHomeScreen extends StatelessWidget {
-  const ElderEasyHomeScreen({super.key});
+class GuardianHomeScreen extends StatelessWidget {
+  const GuardianHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
