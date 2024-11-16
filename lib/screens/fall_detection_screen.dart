@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:geolocator/geolocator.dart';
+
+import 'elderly/heat_info_screen.dart';
 
 class FallDetectionScreen extends StatefulWidget {
   const FallDetectionScreen({super.key});
@@ -28,7 +31,7 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
 
   // 상수
   static const double _movementThreshold = 10.0; // meters
-  static const int _stationaryThresholdMinutes = 10;
+  static const int _stationaryThresholdMinutes = 1;
 
   // 상태
   bool _isInitializing = true;
@@ -110,8 +113,8 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('장시간 야외 활동 감지'),
-        content: const Text('현재 폭염 주의보가 발령된 상태입니다.\n괜찮으신가요?'),
+        title: const Text('장시간 정지 감지'),
+        content: const Text('현재 장시간 정지 상태입니다.\n괜찮으신가요?'),
         actions: [
           TextButton(
             onPressed: () {
@@ -132,14 +135,8 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
   }
 
   void _showShelterGuide() {
-    // TODO: 무더위 쉼터 화면으로 이동 예정
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('가까운 무더위 쉼터 화면으로 이동할 예정입니다.'),
-        duration: Duration(seconds: 2),
-      ),
-    );
-    Navigator.pop(context); // 기존 알림창 닫기
+    Navigator.pop(context);
+    Get.to(() => const ElderlyHeatInfoScreen());
   }
 
   void _startListening() {
