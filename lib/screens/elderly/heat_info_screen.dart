@@ -1,9 +1,123 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:openapi/openapi.dart';
 
-class ElderlyHeatInfoScreen extends StatelessWidget {
+class ElderlyHeatInfoScreen extends StatefulWidget {
   const ElderlyHeatInfoScreen({super.key});
+
+  @override
+  State<ElderlyHeatInfoScreen> createState() => _ElderlyHeatInfoScreenState();
+}
+
+class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
+  NaverMapController? _mapController;
+  NLatLng? _currentLocation;
+  String? _temperature;
+  String? _feelTemperature;
+  String? _address;
+  List<Shelter>? _shelters;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    final position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    setState(() {
+      _currentLocation = NLatLng(position.latitude, position.longitude);
+      _temperature = '31°C';
+      _feelTemperature = '체감 온도 33°C';
+      _address = '고양시 일산서구';
+    });
+
+    if (_mapController != null && _currentLocation != null) {
+      _mapController!.updateCamera(
+        NCameraUpdate.withParams(
+          target: _currentLocation!,
+          zoom: 15,
+        ),
+      );
+    }
+
+    if (_currentLocation != null) {
+      final api = Openapi().getSheltersApi();
+      final response = await api.apiSheltersGet(
+        latitude: _currentLocation!.latitude,
+        longitude: _currentLocation!.longitude,
+      );
+
+      setState(() {
+        _shelters = response.data!.data?.toList();
+      });
+
+      if (_mapController != null) {
+        _updateMarkers();
+      }
+    }
+  }
+
+  void _updateMarkers() {
+    _mapController?.clearOverlays();
+
+    _mapController?.addOverlay(
+      NMarker(
+        id: 'current',
+        position: _currentLocation!,
+        caption: NOverlayCaption(
+          text: '현위치',
+          textSize: 15,
+        ),
+        icon: NOverlayImage.fromAssetImage(
+            'assets/images/tabler_user-filled.png'),
+      ),
+    );
+
+    _shelters?.asMap().forEach((i, shelter) {
+      _mapController?.addOverlay(
+        NMarker(
+          id: 'shelter_$i',
+          position: NLatLng(
+            shelter.latitude!.toDouble(),
+            shelter.longitude!.toDouble(),
+          ),
+          caption: NOverlayCaption(
+            text: shelter.name!,
+            textSize: 15,
+          ),
+          icon: NOverlayImage.fromAssetImage('assets/images/mdi_location.png'),
+        ),
+      );
+    });
+  }
+
+  void _updateCurrentLocation() async {
+    final position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    setState(() {
+      _currentLocation = NLatLng(position.latitude, position.longitude);
+    });
+
+    if (_mapController != null) {
+      _mapController!.updateCamera(
+        NCameraUpdate.withParams(
+          target: _currentLocation!,
+          zoom: 15,
+        ),
+      );
+      _updateMarkers();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,26 +249,37 @@ class ElderlyHeatInfoScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        '고양시 일산서구',
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
-                      ),
-                      const Text(
-                        '31°C',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
-                        ),
-                      ),
-                      const Text(
-                        '체감 온도 33°C',
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
-                      ),
+                      _address == null
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFFF7171),
+                              ),
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _address!,
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                  ),
+                                ),
+                                Text(
+                                  _temperature!,
+                                  style: const TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                Text(
+                                  _feelTemperature!,
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                  ),
+                                ),
+                              ],
+                            ),
                     ],
                   ),
                 ),
@@ -191,188 +316,146 @@ class ElderlyHeatInfoScreen extends StatelessWidget {
                       Stack(
                         children: [
                           Container(
-                            height: 150,
+                            height: 400,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: NaverMap(
-                              options: NaverMapViewOptions(
-                                initialCameraPosition: NCameraPosition(
-                                  target: NLatLng(37.6037589, 126.8666034),
-                                  zoom: 15,
-                                ),
-                                mapType: NMapType.basic,
-                                activeLayerGroups: [
-                                  NLayerGroup.building,
-                                  NLayerGroup.transit
-                                ],
-                                rotationGesturesEnable: false,
-                                scrollGesturesEnable: true,
-                                tiltGesturesEnable: false,
-                                zoomGesturesEnable: true,
-                                stopGesturesEnable: false,
-                              ),
-                              onMapReady: (controller) {
-                                controller.addOverlay(
-                                  NMarker(
-                                    id: 'marker',
-                                    position: NLatLng(37.6037589, 126.8666034),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 8,
-                            right: 8,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFFF7171),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/images/dashicons_update.svg',
-                                    width: 30,
-                                    height: 30,
-                                    colorFilter: const ColorFilter.mode(
-                                      Colors.white,
-                                      BlendMode.srcIn,
+                            child: _currentLocation == null
+                                ? const Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        CircularProgressIndicator(
+                                          color: Color(0xFFFF7171),
+                                        ),
+                                        SizedBox(height: 16),
+                                        Text(
+                                          '현재 위치를 확인하는 중입니다...',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text(
-                                    '현위치 업데이트',
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      color: Colors.white,
+                                  )
+                                : NaverMap(
+                                    options: NaverMapViewOptions(
+                                      initialCameraPosition: NCameraPosition(
+                                        target: _currentLocation!,
+                                        zoom: 15,
+                                      ),
+                                      mapType: NMapType.basic,
+                                      activeLayerGroups: [
+                                        NLayerGroup.building,
+                                        NLayerGroup.transit
+                                      ],
+                                      rotationGesturesEnable: false,
+                                      scrollGesturesEnable: true,
+                                      tiltGesturesEnable: false,
+                                      zoomGesturesEnable: true,
+                                      stopGesturesEnable: false,
                                     ),
+                                    onMapReady: (controller) {
+                                      _mapController = controller;
+                                      _updateMarkers();
+                                    },
                                   ),
-                                ],
+                          ),
+                          if (_currentLocation != null)
+                            Positioned(
+                              bottom: 8,
+                              right: 8,
+                              child: ElevatedButton(
+                                onPressed: _updateCurrentLocation,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFF7171),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/images/dashicons_update.svg',
+                                      width: 30,
+                                      height: 30,
+                                      colorFilter: const ColorFilter.mode(
+                                        Colors.white,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Text(
+                                      '현위치 업데이트',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                       const SizedBox(height: 8),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                '○○어르신 복지센터',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFFFE5E5),
-                                  side: const BorderSide(
-                                    color: Color(0xFFFF7171),
-                                    width: 1,
+                        children: _shelters
+                                ?.map(
+                                  (shelter) => Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          shelter.name ?? '',
+                                          style: const TextStyle(fontSize: 22),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // 안내 로직 구현
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFFFFE5E5),
+                                          side: const BorderSide(
+                                            color: Color(0xFFFF7171),
+                                            width: 1,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 4,
+                                          ),
+                                        ),
+                                        child: const Text(
+                                          '안내하기',
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            color: Color(0xFFFF7171),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 4,
-                                  ),
-                                ),
-                                child: const Text(
-                                  '안내하기',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    color: Color(0xFFFF7171),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                '○○안전숙소',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFFFE5E5),
-                                  side: const BorderSide(
-                                    color: Color(0xFFFF7171),
-                                    width: 1,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 4,
-                                  ),
-                                ),
-                                child: const Text(
-                                  '안내하기',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    color: Color(0xFFFF7171),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                '은행춘당',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFFFE5E5),
-                                  side: const BorderSide(
-                                    color: Color(0xFFFF7171),
-                                    width: 1,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 4,
-                                  ),
-                                ),
-                                child: const Text(
-                                  '안내하기',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    color: Color(0xFFFF7171),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                )
+                                .toList() ??
+                            [],
                       ),
                     ],
                   ),
@@ -383,5 +466,11 @@ class ElderlyHeatInfoScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _mapController?.dispose();
+    super.dispose();
   }
 }

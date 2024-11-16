@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:openapi/openapi.dart';
 
 class GuardianHeatInfoScreen extends StatefulWidget {
   const GuardianHeatInfoScreen({super.key});
@@ -12,6 +14,8 @@ class GuardianHeatInfoScreen extends StatefulWidget {
 class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
   NLatLng? _motherLocation;
   NLatLng? _fatherLocation;
+  NaverMapController? _motherMapController;
+  NaverMapController? _fatherMapController;
 
   // 날씨 정보를 담을 변수들
   String? _motherTemp;
@@ -23,6 +27,9 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
   String? _motherAddress;
   String? _fatherAddress;
 
+  List<Shelter>? _motherShelters;
+  List<Shelter>? _fatherShelters;
+
   @override
   void initState() {
     super.initState();
@@ -30,10 +37,17 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
   }
 
   void initStateAsync() async {
+    final SheltersApi api = Openapi().getSheltersApi();
+
+    // 현재 위치 가져오기
+    final position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
       _motherLocation = const NLatLng(36.870592, 128.531593);
-      _fatherLocation = const NLatLng(37.6037589, 126.8666034);
+      _fatherLocation = NLatLng(position.latitude, position.longitude);
 
       _motherTemp = '35°C';
       _motherFeelTemp = '체감 온도 37.5°C';
@@ -43,6 +57,88 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
       _motherAddress = '경상북도 영주시';
       _fatherAddress = '고양시 덕양구';
     });
+
+    // 무더위 쉼터 정보 가져오기
+    if (_motherLocation != null) {
+      final motherResponse = await api.apiSheltersGet(
+        latitude: _motherLocation!.latitude,
+        longitude: _motherLocation!.longitude,
+      );
+      setState(() {
+        _motherShelters = motherResponse.data!.data?.toList();
+      });
+      if (_motherMapController != null) {
+        _updateMarkers(
+          _motherMapController!,
+          _motherShelters,
+          _motherLocation!,
+        );
+      }
+    }
+
+    if (_fatherLocation != null) {
+      final fatherResponse = await api.apiSheltersGet(
+        latitude: _fatherLocation!.latitude,
+        longitude: _fatherLocation!.longitude,
+      );
+      setState(() {
+        _fatherShelters = fatherResponse.data!.data?.toList();
+      });
+      if (_fatherMapController != null) {
+        _updateMarkers(
+          _fatherMapController!,
+          _fatherShelters,
+          _fatherLocation!,
+        );
+      }
+    }
+  }
+
+  void _updateMarkers(
+    NaverMapController controller,
+    List<Shelter>? shelters,
+    NLatLng currentLocation,
+  ) {
+    // 기존 마커들 제거
+    controller.clearOverlays();
+
+    // 현재 위치 마커
+    controller.addOverlay(
+      NMarker(
+        id: 'current',
+        position: currentLocation,
+        caption: NOverlayCaption(
+          text: '현위치',
+          textSize: 15,
+        ),
+        icon: NOverlayImage.fromAssetImage(
+          'assets/images/tabler_user-filled.png',
+        ),
+      ),
+    );
+
+    // 쉼터 마커들 추가
+    if (shelters != null) {
+      for (var i = 0; i < shelters.length; i++) {
+        final shelter = shelters[i];
+        controller.addOverlay(
+          NMarker(
+            id: 'shelter_$i',
+            position: NLatLng(
+              shelter.latitude!.toDouble(),
+              shelter.longitude!.toDouble(),
+            ),
+            caption: NOverlayCaption(
+              text: shelter.name!,
+              textSize: 15,
+            ),
+            icon: NOverlayImage.fromAssetImage(
+              'assets/images/mdi_location.png',
+            ),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -127,15 +223,15 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
                 _buildMapCard(
                   '어머니 근처 가까운 무더위 쉼터 찾기',
                   context,
-                  lat: 36.870592,
-                  lng: 128.531593,
+                  lat: _motherLocation?.latitude ?? 36.870592,
+                  lng: _motherLocation?.longitude ?? 128.531593,
                 ),
                 const SizedBox(height: 16),
                 _buildMapCard(
                   '아버지 근처 가까운 무더위 쉼터 찾기',
                   context,
-                  lat: 37.6037589,
-                  lng: 126.8666034,
+                  lat: _fatherLocation?.latitude ?? 37.6037589,
+                  lng: _fatherLocation?.longitude ?? 126.8666034,
                 ),
               ],
             ),
@@ -206,6 +302,9 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
     required double lat,
     required double lng,
   }) {
+    final isMotherMap = title.contains('어머니');
+    final currentLocation = NLatLng(lat, lng);
+
     // 현재 시각에서 0~600초 사이의 랜덤값을 뺀 시각 계산
     final random = DateTime.now().subtract(
       Duration(seconds: (DateTime.now().millisecondsSinceEpoch % 601)),
@@ -269,7 +368,7 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
                 : NaverMap(
                     options: NaverMapViewOptions(
                       initialCameraPosition: NCameraPosition(
-                        target: NLatLng(lat, lng),
+                        target: currentLocation,
                         zoom: 15,
                       ),
                       mapType: NMapType.basic,
@@ -279,17 +378,23 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
                       ],
                     ),
                     onMapReady: (controller) {
-                      controller.addOverlay(
-                        NMarker(
-                          id: 'marker',
-                          position: NLatLng(lat, lng),
-                        ),
-                      );
+                      if (isMotherMap) {
+                        _motherMapController = controller;
+                      } else {
+                        _fatherMapController = controller;
+                      }
                     },
                   ),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _motherMapController?.dispose();
+    _fatherMapController?.dispose();
+    super.dispose();
   }
 }
