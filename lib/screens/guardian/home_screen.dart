@@ -17,13 +17,13 @@ class GuardianHomeScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20),
           children: [
             _buildHeader(context),
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
             _buildGuardianLabel(),
             const SizedBox(height: 20),
             _buildCardNewsSection(context),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             _buildCallButtons(),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             _buildRecentAlerts(),
           ],
         ),
@@ -138,7 +138,7 @@ class GuardianHomeScreen extends StatelessWidget {
           _buildCardNewsItem(
             context,
             'card_news_3',
-            '독거노인\n폭염 대비',
+            '독거노인, 노숙인\n폭염 대비',
             '폭염이 강한 시간에는 근처 무더위쉼터로 가서 휴식하기.',
             const CardNewsScreenThree(),
           ),
@@ -163,8 +163,8 @@ class GuardianHomeScreen extends StatelessWidget {
           );
         },
         child: Container(
-          height: 240, // 컨테이너 높이 증가
-          margin: const EdgeInsets.symmetric(horizontal: 4),
+          height: 260, // 컨테이너 높이 증가
+          margin: const EdgeInsets.symmetric(horizontal: 1),
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -194,7 +194,7 @@ class GuardianHomeScreen extends StatelessWidget {
               Text(
                 description,
                 style: const TextStyle(
-                  fontSize: 10,
+                  fontSize: 11.5,
                   color: Colors.grey,
                 ),
               ),
@@ -308,14 +308,20 @@ class GuardianHomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
-                _AlertRow(time: '5분 전', message: '어머니의 낙상이 감지되었습니다.'),
                 _AlertRow(
-                  time: '15분 전',
+                    time: '15분 전', message: '일산은 오늘 낮 최고기온이 31도까지 올라 무더워요.'),
+                _AlertRow(
+                  time: '30분 전',
                   message: '오늘 부모님께 안부 전화를 드려보는 건 어떨까요?',
                 ),
                 _AlertRow(
+                  time: '2시간 전',
+                  message:
+                      '야외활동과 외출은 자제하고, 물을 자주 드시면서 충분한 휴식을 취하시라고 어르신들께 안내 부탁드려요.',
+                ),
+                _AlertRow(
                   time: '어제',
-                  message: '오늘 부모님 지역에 폭우가 예상됩니다.',
+                  message: '내일 새벽부터 비소식이 있어요.',
                 ),
               ],
             ),
@@ -337,16 +343,20 @@ class _AlertRow extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start, // 메시지가 여러 줄일 때 정렬
         children: [
-          Text(
-            time,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+          SizedBox(
+            width: 85, // 고정된 너비 설정
+            child: Text(
+              time,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ),
-          const SizedBox(width: 15),
+          const SizedBox(width: 10), // 시간과 메시지 간격
           Expanded(
             child: Text(
               message,

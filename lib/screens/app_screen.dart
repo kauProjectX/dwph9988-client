@@ -5,7 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../controllers/user_controller.dart';
 import 'elderly/heat_info_screen.dart';
-import 'fall_detection_screen.dart';
+import 'elderly/fall_detection_screen.dart';
 import 'guardian/heat_info_screen.dart';
 import 'guardian/fall_detection_screen.dart';
 import '../screens/elderly/home_screen.dart';

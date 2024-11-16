@@ -5,7 +5,7 @@ import '../point_detail_screen.dart';
 import '../elderly/home_screen.dart';
 import '../elderly/heat_info_screen.dart';
 import '../settings_screen.dart';
-import '../fall_detection_screen.dart';
+import 'fall_detection_screen.dart';
 
 class ElderEasyHomeScreen extends StatelessWidget {
   const ElderEasyHomeScreen({super.key});
