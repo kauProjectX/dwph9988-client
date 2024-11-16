@@ -19,7 +19,6 @@ import 'package:openapi/src/model/api_members_connect_request_post200_response_r
 import 'package:openapi/src/model/api_members_profile_get200_response.dart';
 import 'package:openapi/src/model/api_members_profile_get200_response_result.dart';
 import 'package:openapi/src/model/api_shelters_get200_response.dart';
-import 'package:openapi/src/model/api_shelters_get400_response.dart';
 import 'package:openapi/src/model/connection_request.dart';
 import 'package:openapi/src/model/connection_verify.dart';
 import 'package:openapi/src/model/shelter.dart';
@@ -32,7 +31,6 @@ part 'serializers.g.dart';
   ApiMembersProfileGet200Response,
   ApiMembersProfileGet200ResponseResult,
   ApiSheltersGet200Response,
-  ApiSheltersGet400Response,
   ConnectionRequest,
   ConnectionVerify,
   Shelter,

@@ -71,7 +71,7 @@ Class | Method | HTTP request | Description
 [*MembersApi*](doc/MembersApi.md) | [**apiMembersProfileGet**](doc/MembersApi.md#apimembersprofileget) | **GET** /api/members/profile | 프로필 조회
 [*MembersApi*](doc/MembersApi.md) | [**apiMembersSocialKakaoGet**](doc/MembersApi.md#apimemberssocialkakaoget) | **GET** /api/members/social/kakao | 카카오 로그인/회원가입
 [*MembersApi*](doc/MembersApi.md) | [**apiMembersWithdrawDelete**](doc/MembersApi.md#apimemberswithdrawdelete) | **DELETE** /api/members/withdraw | 회원 탈퇴
-[*SheltersApi*](doc/SheltersApi.md) | [**apiSheltersGet**](doc/SheltersApi.md#apisheltersget) | **GET** /api/shelters | 무더위쉼터 목록 조회
+[*SheltersApi*](doc/SheltersApi.md) | [**apiSheltersGet**](doc/SheltersApi.md#apisheltersget) | **GET** /api/shelters | GPS 위치 기준으로 무더위쉼터 조회
 
 
 ## Documentation For Models
@@ -81,7 +81,6 @@ Class | Method | HTTP request | Description
  - [ApiMembersProfileGet200Response](doc/ApiMembersProfileGet200Response.md)
  - [ApiMembersProfileGet200ResponseResult](doc/ApiMembersProfileGet200ResponseResult.md)
  - [ApiSheltersGet200Response](doc/ApiSheltersGet200Response.md)
- - [ApiSheltersGet400Response](doc/ApiSheltersGet400Response.md)
  - [ConnectionRequest](doc/ConnectionRequest.md)
  - [ConnectionVerify](doc/ConnectionVerify.md)
  - [Shelter](doc/Shelter.md)

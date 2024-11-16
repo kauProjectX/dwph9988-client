@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 analysis_options.yaml
 doc/ApiMembersConnectRequestPost200Response.md
@@ -7,7 +6,6 @@ doc/ApiMembersConnectRequestPost200ResponseResult.md
 doc/ApiMembersProfileGet200Response.md
 doc/ApiMembersProfileGet200ResponseResult.md
 doc/ApiSheltersGet200Response.md
-doc/ApiSheltersGet400Response.md
 doc/ConnectionRequest.md
 doc/ConnectionVerify.md
 doc/MembersApi.md
@@ -29,21 +27,9 @@ lib/src/model/api_members_connect_request_post200_response_result.dart
 lib/src/model/api_members_profile_get200_response.dart
 lib/src/model/api_members_profile_get200_response_result.dart
 lib/src/model/api_shelters_get200_response.dart
-lib/src/model/api_shelters_get400_response.dart
 lib/src/model/connection_request.dart
 lib/src/model/connection_verify.dart
 lib/src/model/date.dart
 lib/src/model/shelter.dart
 lib/src/serializers.dart
 pubspec.yaml
-test/api_members_connect_request_post200_response_result_test.dart
-test/api_members_connect_request_post200_response_test.dart
-test/api_members_profile_get200_response_result_test.dart
-test/api_members_profile_get200_response_test.dart
-test/api_shelters_get200_response_test.dart
-test/api_shelters_get400_response_test.dart
-test/connection_request_test.dart
-test/connection_verify_test.dart
-test/members_api_test.dart
-test/shelter_test.dart
-test/shelters_api_test.dart

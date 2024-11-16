@@ -9,25 +9,24 @@ All URIs are relative to *https://dwph9988.shop*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**apiSheltersGet**](SheltersApi.md#apisheltersget) | **GET** /api/shelters | 무더위쉼터 목록 조회
+[**apiSheltersGet**](SheltersApi.md#apisheltersget) | **GET** /api/shelters | GPS 위치 기준으로 무더위쉼터 조회
 
 
 # **apiSheltersGet**
-> ApiSheltersGet200Response apiSheltersGet(latitude, longitude, radius)
+> ApiSheltersGet200Response apiSheltersGet(latitude, longitude)
 
-무더위쉼터 목록 조회
+GPS 위치 기준으로 무더위쉼터 조회
 
 ### Example
 ```dart
 import 'package:openapi/api.dart';
 
 final api = Openapi().getSheltersApi();
-final num latitude = 8.14; // num | 현재 위치 위도
-final num longitude = 8.14; // num | 현재 위치 경도
-final num radius = 8.14; // num | 검색 반경(km)
+final num latitude = 37.5666805; // num | GPS 위도
+final num longitude = 126.9784147; // num | GPS 경도
 
 try {
-    final response = api.apiSheltersGet(latitude, longitude, radius);
+    final response = api.apiSheltersGet(latitude, longitude);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling SheltersApi->apiSheltersGet: $e\n');
@@ -38,9 +37,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **latitude** | **num**| 현재 위치 위도 | [optional] 
- **longitude** | **num**| 현재 위치 경도 | [optional] 
- **radius** | **num**| 검색 반경(km) | [optional] 
+ **latitude** | **num**| GPS 위도 | 
+ **longitude** | **num**| GPS 경도 | 
 
 ### Return type
 

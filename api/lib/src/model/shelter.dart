@@ -11,27 +11,14 @@ part 'shelter.g.dart';
 /// Shelter
 ///
 /// Properties:
-/// * [id] - 쉼터 고유 ID
-/// * [facilityName] - 시설명
-/// * [address] - 주소
+/// * [name] - 무더위쉼터 이름
 /// * [latitude] - 위도
 /// * [longitude] - 경도
-/// * [phoneNumber] - 연락처
-/// * [operatingTime] - 운영시간
-/// * [facilityType] - 시설유형
 @BuiltValue()
 abstract class Shelter implements Built<Shelter, ShelterBuilder> {
-  /// 쉼터 고유 ID
-  @BuiltValueField(wireName: r'id')
-  String? get id;
-
-  /// 시설명
-  @BuiltValueField(wireName: r'facilityName')
-  String? get facilityName;
-
-  /// 주소
-  @BuiltValueField(wireName: r'address')
-  String? get address;
+  /// 무더위쉼터 이름
+  @BuiltValueField(wireName: r'name')
+  String? get name;
 
   /// 위도
   @BuiltValueField(wireName: r'latitude')
@@ -40,18 +27,6 @@ abstract class Shelter implements Built<Shelter, ShelterBuilder> {
   /// 경도
   @BuiltValueField(wireName: r'longitude')
   double? get longitude;
-
-  /// 연락처
-  @BuiltValueField(wireName: r'phoneNumber')
-  String? get phoneNumber;
-
-  /// 운영시간
-  @BuiltValueField(wireName: r'operatingTime')
-  String? get operatingTime;
-
-  /// 시설유형
-  @BuiltValueField(wireName: r'facilityType')
-  String? get facilityType;
 
   Shelter._();
 
@@ -76,24 +51,10 @@ class _$ShelterSerializer implements PrimitiveSerializer<Shelter> {
     Shelter object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    if (object.id != null) {
-      yield r'id';
+    if (object.name != null) {
+      yield r'name';
       yield serializers.serialize(
-        object.id,
-        specifiedType: const FullType(String),
-      );
-    }
-    if (object.facilityName != null) {
-      yield r'facilityName';
-      yield serializers.serialize(
-        object.facilityName,
-        specifiedType: const FullType(String),
-      );
-    }
-    if (object.address != null) {
-      yield r'address';
-      yield serializers.serialize(
-        object.address,
+        object.name,
         specifiedType: const FullType(String),
       );
     }
@@ -109,27 +70,6 @@ class _$ShelterSerializer implements PrimitiveSerializer<Shelter> {
       yield serializers.serialize(
         object.longitude,
         specifiedType: const FullType(double),
-      );
-    }
-    if (object.phoneNumber != null) {
-      yield r'phoneNumber';
-      yield serializers.serialize(
-        object.phoneNumber,
-        specifiedType: const FullType(String),
-      );
-    }
-    if (object.operatingTime != null) {
-      yield r'operatingTime';
-      yield serializers.serialize(
-        object.operatingTime,
-        specifiedType: const FullType(String),
-      );
-    }
-    if (object.facilityType != null) {
-      yield r'facilityType';
-      yield serializers.serialize(
-        object.facilityType,
-        specifiedType: const FullType(String),
       );
     }
   }
@@ -155,26 +95,12 @@ class _$ShelterSerializer implements PrimitiveSerializer<Shelter> {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'id':
+        case r'name':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
-          result.id = valueDes;
-          break;
-        case r'facilityName':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.facilityName = valueDes;
-          break;
-        case r'address':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.address = valueDes;
+          result.name = valueDes;
           break;
         case r'latitude':
           final valueDes = serializers.deserialize(
@@ -189,27 +115,6 @@ class _$ShelterSerializer implements PrimitiveSerializer<Shelter> {
             specifiedType: const FullType(double),
           ) as double;
           result.longitude = valueDes;
-          break;
-        case r'phoneNumber':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.phoneNumber = valueDes;
-          break;
-        case r'operatingTime':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.operatingTime = valueDes;
-          break;
-        case r'facilityType':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.facilityType = valueDes;
           break;
         default:
           unhandled.add(key);

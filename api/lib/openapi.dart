@@ -18,7 +18,6 @@ export 'package:openapi/src/model/api_members_connect_request_post200_response_r
 export 'package:openapi/src/model/api_members_profile_get200_response.dart';
 export 'package:openapi/src/model/api_members_profile_get200_response_result.dart';
 export 'package:openapi/src/model/api_shelters_get200_response.dart';
-export 'package:openapi/src/model/api_shelters_get400_response.dart';
 export 'package:openapi/src/model/connection_request.dart';
 export 'package:openapi/src/model/connection_verify.dart';
 export 'package:openapi/src/model/shelter.dart';

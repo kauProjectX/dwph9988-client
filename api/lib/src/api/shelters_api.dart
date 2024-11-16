@@ -10,7 +10,6 @@ import 'package:dio/dio.dart';
 
 import 'package:openapi/src/api_util.dart';
 import 'package:openapi/src/model/api_shelters_get200_response.dart';
-import 'package:openapi/src/model/api_shelters_get400_response.dart';
 
 class SheltersApi {
 
@@ -20,13 +19,12 @@ class SheltersApi {
 
   const SheltersApi(this._dio, this._serializers);
 
-  /// 무더위쉼터 목록 조회
+  /// GPS 위치 기준으로 무더위쉼터 조회
   /// 
   ///
   /// Parameters:
-  /// * [latitude] - 현재 위치 위도
-  /// * [longitude] - 현재 위치 경도
-  /// * [radius] - 검색 반경(km)
+  /// * [latitude] - GPS 위도
+  /// * [longitude] - GPS 경도
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -37,9 +35,8 @@ class SheltersApi {
   /// Returns a [Future] containing a [Response] with a [ApiSheltersGet200Response] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<ApiSheltersGet200Response>> apiSheltersGet({ 
-    num? latitude,
-    num? longitude,
-    num? radius,
+    required num latitude,
+    required num longitude,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -67,9 +64,8 @@ class SheltersApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (latitude != null) r'latitude': encodeQueryParameter(_serializers, latitude, const FullType(num)),
-      if (longitude != null) r'longitude': encodeQueryParameter(_serializers, longitude, const FullType(num)),
-      if (radius != null) r'radius': encodeQueryParameter(_serializers, radius, const FullType(num)),
+      r'latitude': encodeQueryParameter(_serializers, latitude, const FullType(num)),
+      r'longitude': encodeQueryParameter(_serializers, longitude, const FullType(num)),
     };
 
     final _response = await _dio.request<Object>(
