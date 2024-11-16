@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:geolocator/geolocator.dart';
 
-import 'heat_info_screen.dart';
+import 'elderly/heat_info_screen.dart';
 
 class FallDetectionScreen extends StatefulWidget {
   const FallDetectionScreen({super.key});

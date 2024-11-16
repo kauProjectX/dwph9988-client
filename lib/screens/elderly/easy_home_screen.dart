@@ -149,7 +149,7 @@ class ElderEasyHomeScreen extends StatelessWidget {
             ),
           ),
           _buildMenuItem(
-            '낙상 감지',
+            '위험 감지',
             'elder_fall.svg',
             isHighlighted: true,
             onTap: () => Navigator.push(
