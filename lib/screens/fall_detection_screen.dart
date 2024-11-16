@@ -104,7 +104,7 @@ class _FallDetectionScreenState extends State<FallDetectionScreen> {
     );
 
     return _stationaryStartTime != null
-        ? '${distance.toStringAsFixed(1)}m (${_formatDuration(DateTime.now().difference(_stationaryStartTime!))} 전)'
+        ? '${distance.toStringAsFixed(1)}m (${_formatDuration(DateTime.now().difference(_stationaryStartTime!))} 전 대비)'
         : '${distance.toStringAsFixed(1)}m (이동 중)';
   }
 
