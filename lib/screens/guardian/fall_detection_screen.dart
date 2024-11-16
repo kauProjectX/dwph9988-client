@@ -15,7 +15,9 @@ class GuardianFallDetectionScreen extends StatefulWidget {
 class _GuardianFallDetectionScreenState
     extends State<GuardianFallDetectionScreen> {
   bool _isFallDetected = false;
+  bool _isLongStop = false;
   DateTime? _fallDetectedTime;
+  DateTime? _longStopTime;
 
   @override
   void initState() {
@@ -58,6 +60,28 @@ class _GuardianFallDetectionScreenState
     }
   }
 
+  void _showLongStopAlert() {
+    setState(() {
+      _isLongStop = true;
+      _longStopTime = DateTime.now();
+    });
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('장시간 정지 감지 알림'),
+        content: const Text(
+          '현재 폭염 경보령이 내린 가운데, 어르신이 야외에서 장시간동안 움직임이 없는 것을 확인하였습니다.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('확인'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,21 +99,29 @@ class _GuardianFallDetectionScreenState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              'assets/images/fa6-solid_person-falling-burst.svg',
-              width: 100,
-              height: 100,
-              colorFilter: ColorFilter.mode(
-                _isFallDetected ? const Color(0xFFFF7171) : Colors.green,
-                BlendMode.srcIn,
+            GestureDetector(
+              onTap: _showLongStopAlert,
+              child: SvgPicture.asset(
+                'assets/images/fa6-solid_person-falling-burst.svg',
+                width: 100,
+                height: 100,
+                colorFilter: ColorFilter.mode(
+                  (_isLongStop || _isFallDetected)
+                      ? const Color(0xFFFF7171)
+                      : Colors.green,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             const SizedBox(height: 20),
             Text(
-              _isFallDetected
-                  ? '어르신이 넘어진 것을 확인했습니다.\n'
-                      '발생 시각: ${DateFormat('HH:mm:ss').format(_fallDetectedTime!)}'
-                  : '어르신이 안전한 상태입니다.',
+              _isLongStop
+                  ? '현재 폭염 경보령이 내린 가운데,\n어르신이 야외에서 장시간동안 움직임이 없습니다.\n'
+                      '발생 시각: ${DateFormat('HH:mm:ss').format(_longStopTime!)}'
+                  : _isFallDetected
+                      ? '어르신이 넘어진 것을 확인했습니다.\n'
+                          '발생 시각: ${DateFormat('HH:mm:ss').format(_fallDetectedTime!)}'
+                      : '어르신이 안전한 상태입니다.',
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -97,7 +129,7 @@ class _GuardianFallDetectionScreenState
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
-            if (_isFallDetected)
+            if (_isLongStop || _isFallDetected)
               ElevatedButton(
                 onPressed: _callElderly,
                 style: ElevatedButton.styleFrom(
