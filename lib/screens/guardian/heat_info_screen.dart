@@ -2,8 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
-class GuardianHeatInfoScreen extends StatelessWidget {
+class GuardianHeatInfoScreen extends StatefulWidget {
   const GuardianHeatInfoScreen({super.key});
+
+  @override
+  State<GuardianHeatInfoScreen> createState() => _GuardianHeatInfoScreenState();
+}
+
+class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
+  NLatLng? _motherLocation;
+  NLatLng? _fatherLocation;
+
+  // 날씨 정보를 담을 변수들
+  String? _motherTemp;
+  String? _motherFeelTemp;
+  String? _fatherTemp;
+  String? _fatherFeelTemp;
+
+  // 위치 정보도 nullable로
+  String? _motherAddress;
+  String? _fatherAddress;
+
+  @override
+  void initState() {
+    super.initState();
+    initStateAsync();
+  }
+
+  void initStateAsync() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    setState(() {
+      _motherLocation = const NLatLng(36.870592, 128.531593);
+      _fatherLocation = const NLatLng(37.6037589, 126.8666034);
+
+      _motherTemp = '35°C';
+      _motherFeelTemp = '체감 온도 37.5°C';
+      _fatherTemp = '30°C';
+      _fatherFeelTemp = '체감 온도 33°C';
+
+      _motherAddress = '경상북도 영주시';
+      _fatherAddress = '고양시 덕양구';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,18 +105,18 @@ class GuardianHeatInfoScreen extends StatelessWidget {
                     Expanded(
                       child: _buildTemperatureCard(
                         '어머니 지역 날씨',
-                        '경상북도 영주시',
-                        '35°C',
-                        '체감 온도 37.5°C',
+                        _motherAddress,
+                        _motherTemp,
+                        _motherFeelTemp,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: _buildTemperatureCard(
                         '아버지 지역 날씨',
-                        '고양시 덕양구',
-                        '30°C',
-                        '체감 온도 33°C',
+                        _fatherAddress,
+                        _fatherTemp,
+                        _fatherFeelTemp,
                       ),
                     ),
                   ],
@@ -107,9 +147,9 @@ class GuardianHeatInfoScreen extends StatelessWidget {
 
   Widget _buildTemperatureCard(
     String title,
-    String location,
-    String temperature,
-    String feelTemp,
+    String? location,
+    String? temperature,
+    String? feelTemp,
   ) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -137,16 +177,24 @@ class GuardianHeatInfoScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text(location),
-          Text(
-            temperature,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
+          if (location == null || temperature == null || feelTemp == null)
+            const Center(child: CircularProgressIndicator())
+          else
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(location),
+                Text(
+                  temperature,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                ),
+                Text(feelTemp),
+              ],
             ),
-          ),
-          Text(feelTemp),
         ],
       ),
     );
@@ -158,12 +206,7 @@ class GuardianHeatInfoScreen extends StatelessWidget {
     required double lat,
     required double lng,
   }) {
-    final String message = title.contains('어머니')
-        ? '어머니에게 앱을 켜 달라는 알림을 보냈습니다'
-        : '아버지에게 앱을 켜 달라는 알림을 보냈습니다';
-
     // 현재 시각에서 0~600초 사이의 랜덤값을 뺀 시각 계산
-    final now = DateTime.now();
     final random = DateTime.now().subtract(
       Duration(seconds: (DateTime.now().millisecondsSinceEpoch % 601)),
     );
@@ -221,24 +264,29 @@ class GuardianHeatInfoScreen extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
             ),
-            child: NaverMap(
-              options: NaverMapViewOptions(
-                initialCameraPosition: NCameraPosition(
-                  target: NLatLng(lat, lng),
-                  zoom: 15,
-                ),
-                mapType: NMapType.basic,
-                activeLayerGroups: [NLayerGroup.building, NLayerGroup.transit],
-              ),
-              onMapReady: (controller) {
-                controller.addOverlay(
-                  NMarker(
-                    id: 'marker',
-                    position: NLatLng(lat, lng),
+            child: _motherLocation == null || _fatherLocation == null
+                ? const Center(child: CircularProgressIndicator())
+                : NaverMap(
+                    options: NaverMapViewOptions(
+                      initialCameraPosition: NCameraPosition(
+                        target: NLatLng(lat, lng),
+                        zoom: 15,
+                      ),
+                      mapType: NMapType.basic,
+                      activeLayerGroups: [
+                        NLayerGroup.building,
+                        NLayerGroup.transit
+                      ],
+                    ),
+                    onMapReady: (controller) {
+                      controller.addOverlay(
+                        NMarker(
+                          id: 'marker',
+                          position: NLatLng(lat, lng),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),
