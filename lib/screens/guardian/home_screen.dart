@@ -12,22 +12,20 @@ class GuardianHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 25),
-              _buildHeader(context),
-              const SizedBox(height: 25),
-              _buildGuardianLabel(),
-              const SizedBox(height: 20),
-              _buildCardNewsSection(context),
-              const SizedBox(height: 30),
-              _buildCallButtons(),
-              const SizedBox(height: 30),
-              _buildRecentAlerts(),
-            ],
-          ),
+        child: ListView(
+          // ListView로 변경하여 스크롤 가능하게 수정
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          children: [
+            _buildHeader(context),
+            const SizedBox(height: 25),
+            _buildGuardianLabel(),
+            const SizedBox(height: 20),
+            _buildCardNewsSection(context),
+            const SizedBox(height: 30),
+            _buildCallButtons(),
+            const SizedBox(height: 30),
+            _buildRecentAlerts(),
+          ],
         ),
       ),
     );

@@ -173,8 +173,14 @@ class _ElderlyHeatInfoScreenState extends State<ElderlyHeatInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          "폭염 정보",
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: const Color(0xFFFFE5E5),
-        title: const Text('폭염 정보'),
+        elevation: 0,
+        centerTitle: true,
+        leading: Container(),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

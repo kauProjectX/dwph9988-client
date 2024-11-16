@@ -145,8 +145,14 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          "폭염 정보",
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: const Color(0xFFFFE5E5),
-        title: const Text('폭염 정보'),
+        elevation: 0,
+        centerTitle: true,
+        leading: Container(),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -155,41 +161,41 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 10),
                 // Heat Alert Settings Card
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.black),
                   ),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SvgPicture.asset(
-                        'assets/images/ph_bell-fill.svg',
-                        width: 24,
-                        height: 24,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center, // y축 정렬
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/ph_bell-fill.svg',
+                            width: 30,
+                          ),
+                          const SizedBox(width: 12),
+                          const Text(
+                            '재난 알림 : 폭염',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              '폭염 알림 설정',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '현재 설정: 일 최고 기온 22°C 이상',
-                              style: TextStyle(
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                          ],
+                      const SizedBox(height: 12), // 아이콘과 내용 사이 간격 추가
+                      Text(
+                        '오늘 (11일) 11:00부로 폭염경보가 발효되었습니다. 가급적 야외활동을 자제하여 주시고 충분한 수분을 섭취바랍니다.\n울산광역시 (연락처 : 052-229-4052)',
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
                         ),
                       ),
-                      const Icon(Icons.edit),
                     ],
                   ),
                 ),
@@ -250,6 +256,7 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.black),
       ),
@@ -316,6 +323,7 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.black),
       ),
