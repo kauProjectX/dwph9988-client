@@ -353,19 +353,48 @@ class _GuardianHeatInfoScreenState extends State<GuardianHeatInfoScreen> {
           ),
           const SizedBox(height: 8),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, // 양쪽 정렬
             children: [
-              SvgPicture.asset(
-                'assets/images/dashicons_update.svg',
-                width: 16,
-                height: 16,
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/dashicons_update.svg',
+                    width: 16,
+                    height: 16,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '마지막 업데이트 시각: $formattedTime',
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 4),
-              Text(
-                '마지막 업데이트 시각: $formattedTime',
-                style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 12,
+              GestureDetector(
+                onTap: () {
+                  // 전화걸기 버튼 클릭 이벤트 처리
+                  print(isMotherMap ? '어머니에게 전화하기 클릭됨' : '아버지에게 전화하기 클릭됨');
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFEFF0), // 박스 배경색
+                    borderRadius: BorderRadius.circular(10), // 둥근 모서리
+                    border: Border.all(
+                      color: const Color(0xFFFF7171), // 테두리 색
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Text(
+                    isMotherMap ? '어머니에게 전화하기' : '아버지에게 전화하기', // 버튼 텍스트 조건부 변경
+                    style: const TextStyle(
+                      color: Color(0xFFFF7171),
+                      fontSize: 11,
+                    ),
+                  ),
                 ),
               ),
             ],

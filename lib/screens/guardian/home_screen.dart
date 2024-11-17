@@ -288,7 +288,7 @@ class GuardianHomeScreen extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               const Text(
-                '최근 알림',
+                '종합 기상정보 알림',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
@@ -308,21 +308,12 @@ class GuardianHomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
+                _AlertRow(message: '일산은 오늘 낮 최고기온이 31도까지 올라 무더워요.'),
+                _AlertRow(message: '오늘 부모님께 안부 전화를 드려보는 건 어떨까요?'),
                 _AlertRow(
-                    time: '15분 전', message: '일산은 오늘 낮 최고기온이 31도까지 올라 무더워요.'),
-                _AlertRow(
-                  time: '30분 전',
-                  message: '오늘 부모님께 안부 전화를 드려보는 건 어떨까요?',
-                ),
-                _AlertRow(
-                  time: '2시간 전',
-                  message:
-                      '야외활동과 외출은 자제하고, 물을 자주 드시면서 충분한 휴식을 취하시라고 어르신들께 안내 부탁드려요.',
-                ),
-                _AlertRow(
-                  time: '어제',
-                  message: '내일 새벽부터 비소식이 있어요.',
-                ),
+                    message:
+                        '야외활동과 외출은 자제하고, 물을 자주 드시면서 충분한 휴식을 취하시라고 어르신들께 안내 부탁드려요.'),
+                _AlertRow(message: '내일 새벽부터 비소식이 있어요.'),
               ],
             ),
           ),
@@ -333,9 +324,8 @@ class GuardianHomeScreen extends StatelessWidget {
 }
 
 class _AlertRow extends StatelessWidget {
-  const _AlertRow({required this.time, required this.message});
+  const _AlertRow({required this.message});
 
-  final String time;
   final String message;
 
   @override
@@ -345,18 +335,17 @@ class _AlertRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start, // 메시지가 여러 줄일 때 정렬
         children: [
-          SizedBox(
-            width: 85, // 고정된 너비 설정
-            child: Text(
-              time,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+          // 작은 분홍색 동그라미 추가
+          Container(
+            width: 10, // 동그라미의 너비
+            height: 10, // 동그라미의 높이
+            margin: const EdgeInsets.only(top: 5), // 동그라미 위치 조정
+            decoration: const BoxDecoration(
+              color: Color(0xFFFFC0CB), // 분홍색
+              shape: BoxShape.circle, // 원 모양
             ),
           ),
-          const SizedBox(width: 10), // 시간과 메시지 간격
+          const SizedBox(width: 10), // 동그라미와 메시지 간격
           Expanded(
             child: Text(
               message,
